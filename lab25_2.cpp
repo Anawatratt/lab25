@@ -1,45 +1,82 @@
 #include<iostream>
-#include<list>
-#include<algorithm>
-
 using namespace std;
 
-void printList(list<string> s){
-	list<string>::iterator i;
-	for( i = s.begin(); i != s.end(); i++){
-		cout << *i << " ";
-	}		
-	cout << "\n";	
+
+class Node{
+    public:
+    	int data;
+    	Node *next;
+    	~Node();
+};
+
+class List{
+	public:
+		Node *root;
+		int size;
+		void show();
+		void append(int);
+		void insert(int,int);
+		void remove(int);
+};
+
+Node::~Node(){
+    cout << data << " was deleted.\n";
 }
 
-int main(){
+void List::insert(int d,int idx){	
+	Node *n = new Node;
+	n->data = d;
 	
-	list<string> line_up;
-	list<string>::iterator loc;
-	
-	line_up.push_back("Alice");
-	line_up.push_back("Bob");
-	
-	loc = find(line_up.begin(),line_up.end(),"Bob");
-	line_up.insert(loc,"Oscar");
-	
-	line_up.push_back("Luffy");
-	line_up.push_back("Sanji");
-	line_up.push_back("Nami");
-	line_up.pop_front();
-	line_up.pop_front();
-     loc = find(line_up.begin(),line_up.end(),"Sanji");
-     line_up.insert(loc,"Narutu");
-     line_up.insert(line_up.begin(),"Prayath");
-     loc = find(line_up.begin(),line_up.end(),"Prayath");
-     line_up.insert(loc,"Tony");
-     loc = find(line_up.begin(),line_up.end(),"Bob");
-     line_up.erase(loc);
-	line_up.pop_front();
-	line_up.pop_front();
-	line_up.pop_front();
-	
-	printList(line_up);
-		
-	return 0;
+	if(idx == 0){
+		n->next = root;
+		root = n;
+		return;
+	}
+	Node *current = root;
+	for(int i = 0; i < idx-1;i++){
+		current = current->next;
+	}
+	n->next = current->next;
+	current->next = n;		
+}
+
+void List::show(){
+	Node *current = root;
+	cout << current->data << " ";	
+	while(current->next){
+		current = current->next;
+		cout << current->data << " ";
+	}	
+}
+void List::append(int d){	
+	Node *n = new Node;
+	n->data = d; n->next = NULL;
+	if(root == NULL) root = n;
+	else{
+		Node *current = root;
+		while(current->next){
+			current = current->next;
+		}
+		current->next = n;
+	}
+	size++;
+}
+
+void List::remove(int val1){
+	Node *val2 = root;
+	if(val1 == 0){
+	    root = root->next;
+	    delete val2;
+	    return;
+	}
+
+	Node *val3 = root;
+     for(int i = 0; i < val1-1 ;i++){
+         val3 = val3->next;
+     }
+
+     Node *val4 = val3;
+     val3 = val3->next;
+     val4->next = val3->next;
+     delete val3;
 }
