@@ -48,7 +48,6 @@ void List::show(){
 		cout << current->data << " ";
 	}	
 }
-
 void List::append(int d){	
 	Node *n = new Node;
 	n->data = d; n->next = NULL;
@@ -63,4 +62,21 @@ void List::append(int d){
 	size++;
 }
 
-//Write List::remove() here
+void List::remove(int val1){
+	Node *val2 = root;
+	if(val1 == 0){
+	    root = root->next;
+	    delete val2;
+	    return;
+	}
+
+	Node *val3 = root;
+     for(int i = 0; i < val1-1 ;i++){
+         val3 = val3->next;
+     }
+
+     Node *val4 = val3;
+     val3 = val3->next;
+     val4->next = val3->next;
+     delete val3;
+}
